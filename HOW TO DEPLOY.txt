@@ -1,0 +1,23 @@
+SERVER SERVER SERVER SERVER SERVER SERVER SERVER SERVER SERVER SERVER 
+//build docker
+//the "1" is the version number
+docker build -t xaist/kyle-reddit:1 .
+
+//push to docker
+docker push xaist/kyle-reddit:1
+
+//pull from docker on vps
+docker pull xaist/kyle-reddit:1
+
+//tag the docker build on the vps
+docker tag xaist/kyle-reddit:1 dokku/api:latest
+
+//deploy the latest
+dokku tags:deploy api latest
+
+CLIENT CLIENT CLIENT CLIENT CLIENT CLIENT CLIENT CLIENT CLIENT CLIENT 
+//need to run vercel if edited envionrment vars as well
+//run vercel on machine that has source code
+vercel --prod
+
+OR JUST RUN deploy.sh INSIDE THE SERVER FOLDER

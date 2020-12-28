@@ -1,0 +1,5 @@
+# fragments let us reuse objects that have the same fields, adding something new here means it changes everywhere
+fragment RegularUser on User {
+    id
+    username
+}

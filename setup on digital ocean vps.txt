@@ -1,0 +1,25 @@
+SETUP DEPENDENCIES ON VPS 
+//create the dokku app
+dokku apps:create api
+
+//install postgres plugin
+sudo dokku plugin:install https://github.com/dokku/dokku-postgres.git
+
+//create database with name
+dokku postgres:create kyle-reddit
+
+//link database to the dokku app
+dokku postgres:link kyle-reddit api
+
+//install dokku redis
+sudo dokku plugin:install https://github.com/dokku/dokku-redis.git redis
+
+//create redis database
+dokku redis:create kyle-reddit-redis
+
+//link the database with the dokku app
+dokku redis:link kyle-reddit-redis api
+
+//check what containers are running
+//should be redis and postgres
+docker container list
