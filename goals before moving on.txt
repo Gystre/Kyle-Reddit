@@ -1,7 +1,0 @@
-DONE created at on post
-
-PARTIALLY DONE image link for each post (need to find reliable way to upload, store, and serve images)
-
-comments on each post
-
-rich text formatting
