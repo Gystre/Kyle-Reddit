@@ -1,5 +1,4 @@
 import { MyContext } from "src/types";
-import { validatePost } from "../utils/validation/validatePost";
 import {
     Arg,
     Ctx,
@@ -18,8 +17,12 @@ import { Post } from "../entities/Post";
 import { Updoot } from "../entities/Updoot";
 import { User } from "../entities/User";
 import { isAuth } from "../middleware/isAuth";
-import { FieldError } from "./FieldErrorObject";
 import { PostInput } from "./PostInput";
+import { PostResponse } from "./responses/PostResponse";
+import { validatePost } from "./validation/validatePost";
+
+const SNIPPET_LENGTH = 250;
+const SNIPPET_WITH_PICTURE_LENGTH = 100;
 
 @ObjectType()
 class PaginatedPosts {
@@ -30,28 +33,19 @@ class PaginatedPosts {
     hasMore: boolean;
 }
 
-@ObjectType()
-class PostResponse {
-    @Field(() => [FieldError], { nullable: true })
-    errors?: FieldError[];
-
-    @Field(() => Post, { nullable: true })
-    post?: Post;
-}
-
 @Resolver(Post)
 export class PostResolver {
     //Query = getting data
     //Mutation = updating, inserting, or deleting data (anything changing)
 
-    //will be called every time we get a post object
+    //FieldResolver = will be called every time we get a post object
     @FieldResolver(() => String)
     textSnippet(@Root() root: Post) {
         if (root.imageLink != "") {
-            return root.text.slice(0, 50);
+            return root.text.slice(0, SNIPPET_WITH_PICTURE_LENGTH);
         }
 
-        return root.text.slice(0, 250);
+        return root.text.slice(0, SNIPPET_LENGTH);
     }
 
     //will always fetch the creator
@@ -97,9 +91,9 @@ export class PostResolver {
             await getConnection().transaction(async (tm) => {
                 await tm.query(
                     `
-                update updoot
-                set value = $1
-                where "postId" = $2 and "userId" = $3
+                    update updoot
+                    set value = $1
+                    where "postId" = $2 and "userId" = $3
                 `,
                     [realValue, postId, userId]
                 );

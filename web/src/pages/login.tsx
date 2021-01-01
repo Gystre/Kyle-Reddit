@@ -35,6 +35,7 @@ export const Login: React.FC<{}> = () => {
 
                             //clear all posts on login
                             cache.evict({ fieldName: "posts:{}" });
+                            cache.gc();
                         },
                     });
 

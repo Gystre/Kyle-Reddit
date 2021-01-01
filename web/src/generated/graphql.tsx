@@ -17,6 +17,7 @@ export type Query = {
   posts: PaginatedPosts;
   post?: Maybe<Post>;
   me?: Maybe<User>;
+  comments: Array<Comment>;
 };
 
 
@@ -28,6 +29,11 @@ export type QueryPostsArgs = {
 
 export type QueryPostArgs = {
   id: Scalars['Int'];
+};
+
+
+export type QueryCommentsArgs = {
+  postId: Scalars['Int'];
 };
 
 export type PaginatedPosts = {
@@ -42,6 +48,7 @@ export type Post = {
   creatorId: Scalars['Float'];
   voteStatus?: Maybe<Scalars['Int']>;
   creator: User;
+  commentsCount: Scalars['Float'];
   title: Scalars['String'];
   text: Scalars['String'];
   points: Scalars['Float'];
@@ -61,6 +68,17 @@ export type User = {
   updatedAt: Scalars['String'];
 };
 
+export type Comment = {
+  __typename?: 'Comment';
+  id: Scalars['Float'];
+  creatorId: Scalars['Float'];
+  creator: User;
+  postId: Scalars['Float'];
+  text: Scalars['String'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   vote: Scalars['Boolean'];
@@ -72,6 +90,7 @@ export type Mutation = {
   register: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
+  createComment: CommentResponse;
 };
 
 
@@ -118,6 +137,12 @@ export type MutationLoginArgs = {
   usernameOrEmail: Scalars['String'];
 };
 
+
+export type MutationCreateCommentArgs = {
+  text: Scalars['String'];
+  postId: Scalars['Int'];
+};
+
 export type PostResponse = {
   __typename?: 'PostResponse';
   errors?: Maybe<Array<FieldError>>;
@@ -148,9 +173,24 @@ export type UsernamePasswordInput = {
   password: Scalars['String'];
 };
 
+export type CommentResponse = {
+  __typename?: 'CommentResponse';
+  errors?: Maybe<Array<FieldError>>;
+  comment?: Maybe<Comment>;
+};
+
+export type CommentSnippetFragment = (
+  { __typename?: 'Comment' }
+  & Pick<Comment, 'id' | 'creatorId' | 'text' | 'createdAt'>
+  & { creator: (
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'username'>
+  ) }
+);
+
 export type PostSnippetFragment = (
   { __typename?: 'Post' }
-  & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title' | 'points' | 'textSnippet' | 'voteStatus' | 'imageLink'>
+  & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title' | 'points' | 'textSnippet' | 'voteStatus' | 'imageLink' | 'commentsCount'>
   & { creator: (
     { __typename?: 'User' }
     & Pick<User, 'id' | 'username'>
@@ -189,6 +229,26 @@ export type ChangePasswordMutation = (
   & { changePassword: (
     { __typename?: 'UserResponse' }
     & RegularUserResponseFragment
+  ) }
+);
+
+export type CreateCommentMutationVariables = Exact<{
+  postId: Scalars['Int'];
+  text: Scalars['String'];
+}>;
+
+
+export type CreateCommentMutation = (
+  { __typename?: 'Mutation' }
+  & { createComment: (
+    { __typename?: 'CommentResponse' }
+    & { comment?: Maybe<(
+      { __typename?: 'Comment' }
+      & CommentSnippetFragment
+    )>, errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'field' | 'message'>
+    )>> }
   ) }
 );
 
@@ -297,6 +357,19 @@ export type VoteMutation = (
   & Pick<Mutation, 'vote'>
 );
 
+export type CommentsQueryVariables = Exact<{
+  postId: Scalars['Int'];
+}>;
+
+
+export type CommentsQuery = (
+  { __typename?: 'Query' }
+  & { comments: Array<(
+    { __typename?: 'Comment' }
+    & CommentSnippetFragment
+  )> }
+);
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -343,6 +416,18 @@ export type PostsQuery = (
   ) }
 );
 
+export const CommentSnippetFragmentDoc = gql`
+    fragment CommentSnippet on Comment {
+  id
+  creatorId
+  creator {
+    id
+    username
+  }
+  text
+  createdAt
+}
+    `;
 export const PostSnippetFragmentDoc = gql`
     fragment PostSnippet on Post {
   id
@@ -353,6 +438,7 @@ export const PostSnippetFragmentDoc = gql`
   textSnippet
   voteStatus
   imageLink
+  commentsCount
   creator {
     id
     username
@@ -415,6 +501,45 @@ export function useChangePasswordMutation(baseOptions?: Apollo.MutationHookOptio
 export type ChangePasswordMutationHookResult = ReturnType<typeof useChangePasswordMutation>;
 export type ChangePasswordMutationResult = Apollo.MutationResult<ChangePasswordMutation>;
 export type ChangePasswordMutationOptions = Apollo.BaseMutationOptions<ChangePasswordMutation, ChangePasswordMutationVariables>;
+export const CreateCommentDocument = gql`
+    mutation CreateComment($postId: Int!, $text: String!) {
+  createComment(postId: $postId, text: $text) {
+    comment {
+      ...CommentSnippet
+    }
+    errors {
+      field
+      message
+    }
+  }
+}
+    ${CommentSnippetFragmentDoc}`;
+export type CreateCommentMutationFn = Apollo.MutationFunction<CreateCommentMutation, CreateCommentMutationVariables>;
+
+/**
+ * __useCreateCommentMutation__
+ *
+ * To run a mutation, you first call `useCreateCommentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCommentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCommentMutation, { data, loading, error }] = useCreateCommentMutation({
+ *   variables: {
+ *      postId: // value for 'postId'
+ *      text: // value for 'text'
+ *   },
+ * });
+ */
+export function useCreateCommentMutation(baseOptions?: Apollo.MutationHookOptions<CreateCommentMutation, CreateCommentMutationVariables>) {
+        return Apollo.useMutation<CreateCommentMutation, CreateCommentMutationVariables>(CreateCommentDocument, baseOptions);
+      }
+export type CreateCommentMutationHookResult = ReturnType<typeof useCreateCommentMutation>;
+export type CreateCommentMutationResult = Apollo.MutationResult<CreateCommentMutation>;
+export type CreateCommentMutationOptions = Apollo.BaseMutationOptions<CreateCommentMutation, CreateCommentMutationVariables>;
 export const CreatePostDocument = gql`
     mutation CreatePost($input: PostInput!) {
   createPost(input: $input) {
@@ -677,6 +802,39 @@ export function useVoteMutation(baseOptions?: Apollo.MutationHookOptions<VoteMut
 export type VoteMutationHookResult = ReturnType<typeof useVoteMutation>;
 export type VoteMutationResult = Apollo.MutationResult<VoteMutation>;
 export type VoteMutationOptions = Apollo.BaseMutationOptions<VoteMutation, VoteMutationVariables>;
+export const CommentsDocument = gql`
+    query Comments($postId: Int!) {
+  comments(postId: $postId) {
+    ...CommentSnippet
+  }
+}
+    ${CommentSnippetFragmentDoc}`;
+
+/**
+ * __useCommentsQuery__
+ *
+ * To run a query within a React component, call `useCommentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCommentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCommentsQuery({
+ *   variables: {
+ *      postId: // value for 'postId'
+ *   },
+ * });
+ */
+export function useCommentsQuery(baseOptions: Apollo.QueryHookOptions<CommentsQuery, CommentsQueryVariables>) {
+        return Apollo.useQuery<CommentsQuery, CommentsQueryVariables>(CommentsDocument, baseOptions);
+      }
+export function useCommentsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CommentsQuery, CommentsQueryVariables>) {
+          return Apollo.useLazyQuery<CommentsQuery, CommentsQueryVariables>(CommentsDocument, baseOptions);
+        }
+export type CommentsQueryHookResult = ReturnType<typeof useCommentsQuery>;
+export type CommentsLazyQueryHookResult = ReturnType<typeof useCommentsLazyQuery>;
+export type CommentsQueryResult = Apollo.QueryResult<CommentsQuery, CommentsQueryVariables>;
 export const MeDocument = gql`
     query Me {
   me {

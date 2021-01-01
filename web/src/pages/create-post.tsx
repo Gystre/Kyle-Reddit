@@ -1,12 +1,10 @@
 import { Box, Button, Image } from "@chakra-ui/core";
 import { Form, Formik } from "formik";
-import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { InputField } from "../components/InputField";
 import { Layout } from "../components/Layout";
 import { useCreatePostMutation } from "../generated/graphql";
-import { createUrqlClient } from "../utils/createUrqlClient";
 import { toErrorMap } from "../utils/toErrorMap";
 import { useIsAuth } from "../utils/useIsAuth";
 import { withApollo } from "../utils/withApollo";
@@ -32,6 +30,7 @@ const CreatePost: React.FC<{}> = () => {
                         update: (cache) => {
                             //invalidate all posts queries
                             cache.evict({ fieldName: "posts:{}" });
+                            cache.gc();
                         },
                     });
 

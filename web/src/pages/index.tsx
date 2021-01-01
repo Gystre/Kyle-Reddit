@@ -3,22 +3,20 @@ import {
     Button,
     Flex,
     Heading,
+    Image,
     Link,
     Stack,
     Text,
-    Image,
 } from "@chakra-ui/core";
-import { withUrqlClient } from "next-urql";
 import NextLink from "next/link";
-import React, { useState } from "react";
+import React from "react";
+import { Helmet } from "react-helmet";
 import { EditDeletePostButtons } from "../components/EditDeletePostButtons";
 import { Layout } from "../components/Layout";
 import { UpdootSection } from "../components/UpdootSection";
-import { PostsQuery, useMeQuery, usePostsQuery } from "../generated/graphql";
-import { createUrqlClient } from "../utils/createUrqlClient";
-import { Helmet } from "react-helmet";
-import { withApollo } from "../utils/withApollo";
+import { usePostsQuery } from "../generated/graphql";
 import { convertStringToDate } from "../utils/convertStringToDate";
+import { withApollo } from "../utils/withApollo";
 
 const Index = () => {
     //get the posts
@@ -158,6 +156,14 @@ const Index = () => {
                                             alt="broken image lmao"
                                         />
                                     ) : null}
+                                    <br />
+                                    <Box color="grey" fontSize={18}>
+                                        {p.commentsCount == 1 ? (
+                                            <i>{p.commentsCount} comment</i>
+                                        ) : (
+                                            <i>{p.commentsCount} comments</i>
+                                        )}
+                                    </Box>
                                 </Box>
                             </Flex>
                         )

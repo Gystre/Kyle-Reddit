@@ -1,0 +1,12 @@
+mutation CreateComment($postId: Int!, $text: String!) {
+    createComment(postId: $postId, text: $text) {
+        comment {
+            ...CommentSnippet
+        }
+
+        errors {
+            field
+            message
+        }
+    }
+}

@@ -18,6 +18,8 @@ import path from "path";
 import { Updoot } from "./entities/Updoot";
 import { createUserLoader } from "./utils/createUserLoader";
 import { createUpdootLoader } from "./utils/createUpdootLoader";
+import { Comment } from "./entities/Comment";
+import { CommentResolver } from "./resolvers/comment";
 
 const main = async () => {
     //create db connection
@@ -27,13 +29,14 @@ const main = async () => {
         logging: true,
         // synchronize: true, //create the tables automatically without running a migration (good for development)
         migrations: [path.join(__dirname, "./migrations/*")],
-        entities: [User, Post, Updoot],
+        entities: [User, Post, Updoot, Comment],
     });
     //run the migrations inside the migrations folder
     await connection.runMigrations();
 
     //if you need to delete all the posts
-    // await Post.delete({});
+    // await Comment.delete({});
+    // console.log("deleted comments");
 
     //create an instance of express
     const app = express();
@@ -77,7 +80,12 @@ const main = async () => {
 
     const apolloServer = new ApolloServer({
         schema: await buildSchema({
-            resolvers: [HelloResolver, PostResolver, UserResolver],
+            resolvers: [
+                HelloResolver,
+                PostResolver,
+                UserResolver,
+                CommentResolver,
+            ],
             validate: false,
         }),
         context: ({ req, res }) => ({

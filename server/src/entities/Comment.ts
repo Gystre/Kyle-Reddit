@@ -1,23 +1,38 @@
-import { Field, Int, ObjectType } from "type-graphql";
+import { Field, ObjectType } from "type-graphql";
 import {
-    Entity,
     BaseEntity,
-    CreateDateColumn,
-    UpdateDateColumn,
     Column,
+    CreateDateColumn,
+    Entity,
     ManyToOne,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn,
 } from "typeorm";
 import { Post } from "./Post";
+import { User } from "./User";
 
 @ObjectType()
 @Entity()
 export class Comment extends BaseEntity {
-    @Column({ type: "string" })
-    text: string;
+    @Field() //a "field" exposes this column of information to the api
+    @PrimaryGeneratedColumn()
+    id!: number;
+
+    @Field()
+    @Column()
+    creatorId: number;
+
+    @Field()
+    @ManyToOne(() => User)
+    creator: User;
 
     @Field()
     @Column({ type: "int" })
-    userId: number;
+    postId: number;
+
+    @Field()
+    @Column()
+    text!: string;
 
     @Field(() => String)
     @CreateDateColumn()
@@ -28,7 +43,7 @@ export class Comment extends BaseEntity {
     updatedAt = new Date();
 
     @ManyToOne(() => Post, (post) => post.comments, {
-        onDelete: "CASCADE",
+        onDelete: "CASCADE", //delete the entry if a Post is deleted
     })
     post: Post;
 }

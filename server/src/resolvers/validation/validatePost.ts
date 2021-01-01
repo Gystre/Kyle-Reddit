@@ -1,4 +1,4 @@
-import { PostInput } from "../../resolvers/PostInput";
+import { PostInput } from "../PostInput";
 
 export const validatePost = (options: PostInput) => {
     //check if there is title

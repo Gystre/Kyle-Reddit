@@ -40,6 +40,7 @@ export const EditDeletePostButtons: React.FC<Props> = ({ id, creatorId }) => {
                             //same as invalidate cache in urql
                             //Post:66
                             cache.evict({ id: "Post:" + id });
+                            cache.gc();
                         },
                     });
                 }}

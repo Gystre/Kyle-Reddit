@@ -1,35 +1,22 @@
-import { User } from "../entities/User";
+import argon2 from "argon2";
 import { MyContext } from "src/types";
 import {
-    Resolver,
-    Field,
-    Mutation,
-    Ctx,
     Arg,
-    ObjectType,
-    Query,
+    Ctx,
     FieldResolver,
+    Mutation,
+    Query,
+    Resolver,
     Root,
 } from "type-graphql";
-import argon2 from "argon2";
-import { COOKIE_NAME, FORGET_PASSWORD_PREFIX } from "../constants";
-import { UsernamePasswordInput } from "./UsernamePasswordInput";
-import { FieldError } from "./FieldErrorObject";
-import { validateRegister } from "../utils/validation/validateRegister";
-import { sendEmail } from "../utils/sendEmail";
-import { v4 } from "uuid";
 import { getConnection } from "typeorm";
-
-//object types are returned from the mutations
-//the return response from the mutation, will be optional (?) so that it's one or the other
-@ObjectType()
-class UserResponse {
-    @Field(() => [FieldError], { nullable: true })
-    errors?: FieldError[];
-
-    @Field(() => User, { nullable: true })
-    user?: User;
-}
+import { v4 } from "uuid";
+import { COOKIE_NAME, FORGET_PASSWORD_PREFIX } from "../constants";
+import { User } from "../entities/User";
+import { sendEmail } from "../utils/sendEmail";
+import { UserResponse } from "./responses/UserResponse";
+import { UsernamePasswordInput } from "./UsernamePasswordInput";
+import { validateRegister } from "./validation/validateRegister";
 
 //passing the user int othe resolver
 @Resolver(User)

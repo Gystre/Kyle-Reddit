@@ -17,7 +17,6 @@ import { User } from "./User";
 @Entity()
 //BaseEntity = generic entity that lets us do Post.find or Post.insert
 export class Post extends BaseEntity {
-    //4 columns will be created b/c there are 4 properties here
     @Field() //a "field" exposes this column of information to the api
     @PrimaryGeneratedColumn()
     id!: number;
@@ -38,6 +37,10 @@ export class Post extends BaseEntity {
 
     @OneToMany(() => Comment, (comment) => comment.post)
     comments: Comment[];
+
+    @Field()
+    @Column({ type: "int", default: 0 })
+    commentsCount: number;
 
     @Field()
     @Column()
