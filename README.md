@@ -4,7 +4,7 @@ This project is a way for me to learn the full stack development experience, fro
 
 ## Showcase:
 
-![really cool picture of the website](https://cdn.discordapp.com/attachments/200994742782132224/794689647694708766/Kyle_Reddit_Screenshot_2021-01-01_141241.png):
+![really cool picture of the website](https://cdn.discordapp.com/attachments/200994742782132224/794689647694708766/Kyle_Reddit_Screenshot_2021-01-01_141241.png)
 
 ## Todo
 
