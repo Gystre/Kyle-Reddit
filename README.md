@@ -8,13 +8,12 @@ This project is a way for me to learn the full stack development experience, fro
 
 ## Todo
 
--   rich text formatting (display rich text, edit post's rich text, and display post rich text on landing page)
-
 ## Finished
 
 -   created at on post
 -   image link for each post
 -   comments on each post
+-   rich text formatting (display rich text, edit post's rich text, and display post rich text on landing page) (2/18/2021)
 
 ## Where to improve
 
