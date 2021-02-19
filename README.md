@@ -8,7 +8,7 @@ This project is a way for me to learn the full stack development experience, fro
 
 ## Todo
 
--   rich text formatting
+-   rich text formatting (display rich text, edit post's rich text, and display post rich text on landing page)
 
 ## Finished
 

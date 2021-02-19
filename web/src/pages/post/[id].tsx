@@ -1,13 +1,21 @@
 import { useApolloClient } from "@apollo/client";
-import { Box, Button, Heading, Image, Text } from "@chakra-ui/core";
+import { Box, Button, FormLabel, Heading, Image, Text } from "@chakra-ui/core";
 import { Form, Formik } from "formik";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
+import { createEditor, Node } from "slate";
+import { stringifyVariables } from "urql";
 import { CommentSection } from "../../components/CommentSection";
 import { EditDeletePostButtons } from "../../components/EditDeletePostButtons";
 import { InputField } from "../../components/InputField";
 import { Layout } from "../../components/Layout";
+import {
+    RichTextEditor,
+    RichTextViewer,
+} from "../../components/RichTextEditor";
 import { useCreateCommentMutation, useMeQuery } from "../../generated/graphql";
 import { isServer } from "../../utils/isServer";
+import { isSlateObject } from "../../utils/isSlateObject";
+import { slateObjectCharacterLength } from "../../utils/slateObjectCharacterLength";
 import { toErrorMap } from "../../utils/toErrorMap";
 import { useGetIntId } from "../../utils/useGetIntId";
 import { useGetPostFromUrl } from "../../utils/useGetPostFromUrl";
@@ -16,11 +24,14 @@ import { withApollo } from "../../utils/withApollo";
 export const Post = ({}) => {
     const apolloClient = useApolloClient();
     const postId = useGetIntId();
-    const [stateText, setText] = useState("");
 
     const { data, error, loading } = useGetPostFromUrl();
     const meResponse = useMeQuery({ skip: isServer() });
     const [createComment] = useCreateCommentMutation();
+
+    let [commentBody, setCommentBodyValue] = useState<Node[]>([
+        { type: "paragraph", children: [{ text: "" }] },
+    ]);
 
     if (loading || meResponse.loading) {
         return (
@@ -43,6 +54,8 @@ export const Post = ({}) => {
         );
     }
 
+    const commentLength = slateObjectCharacterLength(commentBody);
+
     return (
         <Layout>
             {/* flex buttons to right later */}
@@ -52,7 +65,11 @@ export const Post = ({}) => {
             />
             <Heading mb={4}>{data.post.title}</Heading>
             <Box mb={4}>
-                <Text>{data.post.text}</Text>
+                {isSlateObject(data.post.text) ? (
+                    <RichTextViewer textBody={JSON.parse(data.post.text)} />
+                ) : (
+                    <Text>{data.post.text}</Text>
+                )}
             </Box>
             {data.post.imageLink != "" ? (
                 <Box>
@@ -64,12 +81,19 @@ export const Post = ({}) => {
                 </Box>
             ) : null}
             <br />
+            {/* empty div to jump to */}
+            <div id="comments"></div>
             {/* this should go in the comment section component but not sure how heheheh */}
             <Formik
                 initialValues={{ text: "" }}
                 onSubmit={async (values, { setErrors }) => {
+                    values.text = JSON.stringify(commentBody);
+
                     const response = await createComment({
-                        variables: { postId, text: stateText },
+                        variables: {
+                            postId,
+                            text: JSON.stringify(commentBody),
+                        },
                         update: (cache) => {
                             apolloClient.resetStore();
                         },
@@ -80,13 +104,26 @@ export const Post = ({}) => {
                             toErrorMap(response.data.createComment.errors)
                         );
                     } else {
-                        setText("");
+                        setCommentBodyValue([
+                            { type: "paragraph", children: [{ text: "" }] },
+                        ]);
                     }
                 }}
             >
                 {({ isSubmitting }) => (
                     <Form>
-                        <InputField
+                        <FormLabel>
+                            {"Comment as " + meResponse.data?.me?.username}
+                        </FormLabel>
+
+                        <Box border="1px solid #E2E8F0" borderRadius="5px">
+                            <RichTextEditor
+                                textBody={commentBody}
+                                setTextBodyValue={setCommentBodyValue}
+                                placeholder="(1-250 characters pls) write stuff here, what did you expect!??!"
+                            />
+                        </Box>
+                        {/* <InputField
                             name="text"
                             placeholder="(1-250 characters pls) write stuff here, what did you expect!??!"
                             label={
@@ -99,9 +136,9 @@ export const Post = ({}) => {
                             ) => {
                                 setText(event.target.value);
                             }}
-                        />
-                        <Text color={stateText.length > 250 ? "red.500" : ""}>
-                            Characters: {stateText.length} / 250
+                        /> */}
+                        <Text color={commentLength > 250 ? "red.500" : ""}>
+                            Characters: {commentLength} / 250
                         </Text>
                         <Button
                             mt={4}

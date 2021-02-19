@@ -15,6 +15,7 @@ import { isAuth } from "../middleware/isAuth";
 import { getConnection } from "typeorm";
 import { CommentResponse } from "./responses/CommentResponse";
 import { User } from "../entities/User";
+import { slateObjectCharacterLength } from "../utils/slateObjectCharacterLength";
 
 @Resolver(Comment)
 export class CommentResolver {
@@ -48,8 +49,10 @@ export class CommentResolver {
         @Arg("text", () => String) text: string,
         @Ctx() { req }: MyContext
     ): Promise<CommentResponse> {
+        //text is in slate form so gonna be an object
+        var characterCount = slateObjectCharacterLength(JSON.parse(text));
         //make sure comment isn't empty
-        if (text.length == 0) {
+        if (characterCount == 0) {
             return {
                 errors: [
                     {
@@ -62,7 +65,7 @@ export class CommentResolver {
         }
 
         //can't be longer than 250
-        if (text.length > 250) {
+        if (characterCount > 250) {
             return {
                 errors: [
                     {

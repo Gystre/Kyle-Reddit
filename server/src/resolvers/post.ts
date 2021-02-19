@@ -41,11 +41,14 @@ export class PostResolver {
     //FieldResolver = will be called every time we get a post object
     @FieldResolver(() => String)
     textSnippet(@Root() root: Post) {
-        if (root.imageLink != "") {
-            return root.text.slice(0, SNIPPET_WITH_PICTURE_LENGTH);
-        }
+        //commented out cuz we're doing rich text formatting instead of plain text now
+        //if we cut off the json object we're gon have a bad time :P
+        // if (root.imageLink != "") {
+        //     return root.text.slice(0, SNIPPET_WITH_PICTURE_LENGTH);
+        // }
 
-        return root.text.slice(0, SNIPPET_LENGTH);
+        // return root.text.slice(0, SNIPPET_LENGTH);
+        return root.text;
     }
 
     //will always fetch the creator

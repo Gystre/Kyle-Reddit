@@ -1,9 +1,11 @@
-import { Box, Button, Image } from "@chakra-ui/core";
+import { Box, Button, FormLabel, Image, Input } from "@chakra-ui/core";
 import { Form, Formik } from "formik";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
+import { Node } from "slate";
 import { InputField } from "../components/InputField";
 import { Layout } from "../components/Layout";
+import { RichTextEditor } from "../components/RichTextEditor";
 import { useCreatePostMutation } from "../generated/graphql";
 import { toErrorMap } from "../utils/toErrorMap";
 import { useIsAuth } from "../utils/useIsAuth";
@@ -13,15 +15,21 @@ import { withApollo } from "../utils/withApollo";
 const CreatePost: React.FC<{}> = () => {
     const router = useRouter();
     useIsAuth();
+
     const [createPost] = useCreatePostMutation();
 
     const [link, setLink] = useState("");
+
+    let [textBody, setTextBodyValue] = useState<Node[]>([
+        { type: "paragraph", children: [{ text: "" }] },
+    ]);
 
     return (
         <Layout variant="small">
             <Formik
                 initialValues={{ title: "", text: "", imageLink: "" }}
                 onSubmit={async (values, { setErrors }) => {
+                    values.text = JSON.stringify(textBody);
                     //weird how hooking onChange removes the auto fill in for values...
                     values.imageLink = link;
 
@@ -50,12 +58,14 @@ const CreatePost: React.FC<{}> = () => {
                             label="Title"
                         />
                         <Box mt={4}>
-                            <InputField
-                                textarea
-                                name="text"
-                                placeholder="text..."
-                                label="Body"
-                            />
+                            <FormLabel>Body</FormLabel>
+                            <Box border="1px solid #E2E8F0" borderRadius="5px">
+                                <RichTextEditor
+                                    textBody={textBody}
+                                    setTextBodyValue={setTextBodyValue}
+                                    placeholder="text..."
+                                />
+                            </Box>
                         </Box>
                         <Box mt={4}>
                             <InputField

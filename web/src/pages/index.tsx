@@ -13,9 +13,11 @@ import React from "react";
 import { Helmet } from "react-helmet";
 import { EditDeletePostButtons } from "../components/EditDeletePostButtons";
 import { Layout } from "../components/Layout";
+import { RichTextViewer } from "../components/RichTextEditor";
 import { UpdootSection } from "../components/UpdootSection";
 import { usePostsQuery } from "../generated/graphql";
 import { convertStringToDate } from "../utils/convertStringToDate";
+import { isSlateObject } from "../utils/isSlateObject";
 import { withApollo } from "../utils/withApollo";
 
 const Index = () => {
@@ -137,9 +139,17 @@ const Index = () => {
                                         {convertStringToDate(p.createdAt)}
                                     </Text>
                                     <Flex align="center">
-                                        <Text flex={1} mt={4}>
-                                            {p.textSnippet}
-                                        </Text>
+                                        {isSlateObject(p.textSnippet) ? (
+                                            <RichTextViewer
+                                                textBody={JSON.parse(
+                                                    p.textSnippet
+                                                )}
+                                            />
+                                        ) : (
+                                            <Text flex={1} mt={4}>
+                                                {p.textSnippet}
+                                            </Text>
+                                        )}
 
                                         <Box ml="auto" pl={4}>
                                             <EditDeletePostButtons
@@ -158,11 +168,24 @@ const Index = () => {
                                     ) : null}
                                     <br />
                                     <Box color="grey" fontSize={18}>
-                                        {p.commentsCount == 1 ? (
-                                            <i>{p.commentsCount} comment</i>
-                                        ) : (
-                                            <i>{p.commentsCount} comments</i>
-                                        )}
+                                        <NextLink
+                                            href="/post/[id]/#comments"
+                                            as={`/post/${p.id}/#comments`}
+                                        >
+                                            <Link>
+                                                {p.commentsCount == 1 ? (
+                                                    <i>
+                                                        {p.commentsCount}{" "}
+                                                        comment
+                                                    </i>
+                                                ) : (
+                                                    <i>
+                                                        {p.commentsCount}{" "}
+                                                        comments
+                                                    </i>
+                                                )}
+                                            </Link>
+                                        </NextLink>
                                     </Box>
                                 </Box>
                             </Flex>

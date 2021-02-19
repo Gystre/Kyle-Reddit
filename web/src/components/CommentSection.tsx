@@ -2,7 +2,9 @@ import { Box, Flex, Heading, Stack, Text } from "@chakra-ui/core";
 import React from "react";
 import { useCommentsQuery } from "../generated/graphql";
 import { convertStringToDate } from "../utils/convertStringToDate";
+import { isSlateObject } from "../utils/isSlateObject";
 import { useGetIntId } from "../utils/useGetIntId";
+import { RichTextViewer } from "./RichTextEditor";
 
 interface Props {
     postId: number;
@@ -41,9 +43,17 @@ export const CommentSection: React.FC<Props> = ({ postId }) => {
                                     {c.creator.username} on{" "}
                                     {convertStringToDate(c.createdAt)}
                                 </Heading>
-                                <Box mt={4}>
-                                    <Text wordBreak="break-word">{c.text}</Text>
-                                </Box>
+                                {isSlateObject(c.text) ? (
+                                    <RichTextViewer
+                                        textBody={JSON.parse(c.text)}
+                                    />
+                                ) : (
+                                    <Box mt={4}>
+                                        <Text wordBreak="break-word">
+                                            {c.text}
+                                        </Text>
+                                    </Box>
+                                )}
                             </Box>
                         </Flex>
                     )
