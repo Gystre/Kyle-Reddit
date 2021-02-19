@@ -1,12 +1,11 @@
 import { Box, Button } from "@chakra-ui/core";
 import { Form, Formik } from "formik";
-import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
 import React from "react";
 import { InputField } from "../components/InputField";
+import { SEO } from "../components/SEO";
 import { Wrapper } from "../components/Wrapper";
 import { MeDocument, MeQuery, useRegisterMutation } from "../generated/graphql";
-import { createUrqlClient } from "../utils/createUrqlClient";
 import { toErrorMap } from "../utils/toErrorMap";
 import { withApollo } from "../utils/withApollo";
 
@@ -18,6 +17,10 @@ export const Register: React.FC<Props> = () => {
     const [register] = useRegisterMutation();
     return (
         <Wrapper variant="small">
+            <SEO
+                url={window.location.href}
+                description="Make an account with KYLE REDDIT TODAYYYYYY. Join BILLIONS OF USERS AROUND THE WORLD AND ENGAGE IN SOCIAL MEDIA POSTING"
+            />
             <Formik
                 initialValues={{ email: "", username: "", password: "" }}
                 onSubmit={async (values, { setErrors }) => {

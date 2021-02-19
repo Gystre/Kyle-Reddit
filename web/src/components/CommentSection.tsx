@@ -3,7 +3,6 @@ import React from "react";
 import { useCommentsQuery } from "../generated/graphql";
 import { convertStringToDate } from "../utils/convertStringToDate";
 import { isSlateObject } from "../utils/isSlateObject";
-import { useGetIntId } from "../utils/useGetIntId";
 import { RichTextViewer } from "./RichTextEditor";
 
 interface Props {

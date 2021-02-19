@@ -2,6 +2,7 @@ import { Box, Button } from "@chakra-ui/core";
 import { Form, Formik } from "formik";
 import React, { useState } from "react";
 import { InputField } from "../components/InputField";
+import { SEO } from "../components/SEO";
 import { Wrapper } from "../components/Wrapper";
 import { useForgotPasswordMutation } from "../generated/graphql";
 import { withApollo } from "../utils/withApollo";
@@ -11,6 +12,10 @@ const ForgotPassword: React.FC<{}> = ({}) => {
     const [forgotPassword] = useForgotPasswordMutation();
     return (
         <Wrapper variant="small">
+            <SEO
+                url={window.location.href}
+                description="haha imagine losing ur password"
+            />
             <Formik
                 initialValues={{ email: "" }}
                 onSubmit={async (values) => {

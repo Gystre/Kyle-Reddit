@@ -1,11 +1,12 @@
-import { Box, Button, FormLabel, Image, Input } from "@chakra-ui/core";
+import { Box, Button, FormLabel, Image } from "@chakra-ui/core";
 import { Form, Formik } from "formik";
 import { useRouter } from "next/router";
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import { Node } from "slate";
 import { InputField } from "../components/InputField";
 import { Layout } from "../components/Layout";
 import { RichTextEditor } from "../components/RichTextEditor";
+import { SEO } from "../components/SEO";
 import { useCreatePostMutation } from "../generated/graphql";
 import { toErrorMap } from "../utils/toErrorMap";
 import { useIsAuth } from "../utils/useIsAuth";
@@ -26,6 +27,10 @@ const CreatePost: React.FC<{}> = () => {
 
     return (
         <Layout variant="small">
+            <SEO
+                url={window.location.href}
+                description="Create a post on KYLE REDDIT!!!!!"
+            />
             <Formik
                 initialValues={{ title: "", text: "", imageLink: "" }}
                 onSubmit={async (values, { setErrors }) => {

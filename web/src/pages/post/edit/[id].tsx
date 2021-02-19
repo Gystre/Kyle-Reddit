@@ -1,4 +1,4 @@
-import { Box, Button, Image, Text } from "@chakra-ui/core";
+import { Box, Button, Image } from "@chakra-ui/core";
 import { Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -6,13 +6,14 @@ import { Node } from "slate";
 import { InputField } from "../../../components/InputField";
 import { Layout } from "../../../components/Layout";
 import { RichTextEditor } from "../../../components/RichTextEditor";
+import { SEO } from "../../../components/SEO";
 import {
     usePostQuery,
     useUpdatePostMutation,
 } from "../../../generated/graphql";
+import { isSlateObject } from "../../../utils/isSlateObject";
 import { toErrorMap } from "../../../utils/toErrorMap";
 import { useGetIntId } from "../../../utils/useGetIntId";
-import { isSlateObject } from "../../../utils/isSlateObject";
 import { withApollo } from "../../../utils/withApollo";
 
 export const EditPost = ({}) => {
@@ -81,6 +82,7 @@ export const EditPost = ({}) => {
 
     return (
         <Layout variant="small">
+            <SEO url={window.location.href} description={data.post.title} />
             <Formik
                 initialValues={{
                     title: data.post.title,

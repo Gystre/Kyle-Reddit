@@ -1,17 +1,16 @@
 import { useApolloClient } from "@apollo/client";
 import { Box, Button, FormLabel, Heading, Image, Text } from "@chakra-ui/core";
 import { Form, Formik } from "formik";
-import React, { useMemo, useState } from "react";
-import { createEditor, Node } from "slate";
-import { stringifyVariables } from "urql";
+import React, { useState } from "react";
+import { Node } from "slate";
 import { CommentSection } from "../../components/CommentSection";
 import { EditDeletePostButtons } from "../../components/EditDeletePostButtons";
-import { InputField } from "../../components/InputField";
 import { Layout } from "../../components/Layout";
 import {
     RichTextEditor,
     RichTextViewer,
 } from "../../components/RichTextEditor";
+import { SEO } from "../../components/SEO";
 import { useCreateCommentMutation, useMeQuery } from "../../generated/graphql";
 import { isServer } from "../../utils/isServer";
 import { isSlateObject } from "../../utils/isSlateObject";
@@ -58,6 +57,7 @@ export const Post = ({}) => {
 
     return (
         <Layout>
+            <SEO url={window.location.href} description={data.post.title} />
             {/* flex buttons to right later */}
             <EditDeletePostButtons
                 id={data.post.id}

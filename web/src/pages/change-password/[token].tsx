@@ -1,20 +1,19 @@
 //this file has brackets in it's name b/c we need variable in url (it's a next.js convention)
 import { Box, Button, Flex, Link } from "@chakra-ui/core";
-import { Formik, Form } from "formik";
+import { Form, Formik } from "formik";
 import { NextPage } from "next";
+import NextLink from "next/link";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { InputField } from "../../components/InputField";
+import { SEO } from "../../components/SEO";
 import { Wrapper } from "../../components/Wrapper";
-import { toErrorMap } from "../../utils/toErrorMap";
 import {
     MeDocument,
     MeQuery,
     useChangePasswordMutation,
 } from "../../generated/graphql";
-import { useRouter } from "next/router";
-import { withUrqlClient } from "next-urql";
-import { createUrqlClient } from "../../utils/createUrqlClient";
-import NextLink from "next/link";
+import { toErrorMap } from "../../utils/toErrorMap";
 import { withApollo } from "../../utils/withApollo";
 
 const ChangePassword: NextPage = () => {
@@ -23,6 +22,10 @@ const ChangePassword: NextPage = () => {
     const [tokenError, setTokenError] = useState("");
     return (
         <Wrapper variant="small">
+            <SEO
+                url={window.location.href}
+                description="Change ur password for KYLE REDDIT!!!!"
+            />
             <Formik
                 initialValues={{ newPassword: "" }}
                 onSubmit={async (values, { setErrors }) => {

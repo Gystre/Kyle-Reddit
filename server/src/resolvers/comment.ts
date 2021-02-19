@@ -10,12 +10,12 @@ import {
     Root,
     UseMiddleware,
 } from "type-graphql";
-import { Comment } from "../entities/Comment";
-import { isAuth } from "../middleware/isAuth";
 import { getConnection } from "typeorm";
-import { CommentResponse } from "./responses/CommentResponse";
+import { Comment } from "../entities/Comment";
 import { User } from "../entities/User";
+import { isAuth } from "../middleware/isAuth";
 import { slateObjectCharacterLength } from "../utils/slateObjectCharacterLength";
+import { CommentResponse } from "./responses/CommentResponse";
 
 @Resolver(Comment)
 export class CommentResolver {

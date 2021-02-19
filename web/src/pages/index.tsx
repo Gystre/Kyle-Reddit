@@ -10,10 +10,10 @@ import {
 } from "@chakra-ui/core";
 import NextLink from "next/link";
 import React from "react";
-import { Helmet } from "react-helmet";
 import { EditDeletePostButtons } from "../components/EditDeletePostButtons";
 import { Layout } from "../components/Layout";
 import { RichTextViewer } from "../components/RichTextEditor";
+import { SEO } from "../components/SEO";
 import { UpdootSection } from "../components/UpdootSection";
 import { usePostsQuery } from "../generated/graphql";
 import { convertStringToDate } from "../utils/convertStringToDate";
@@ -41,75 +41,10 @@ const Index = () => {
 
     return (
         <Layout>
-            <Helmet>
-                <meta
-                    http-equiv="Content-Type"
-                    content="text/html; charset=UTF-8"
-                />
-
-                <meta http-equiv="x-ua-compatible" content="ie=edge" />
-                <meta
-                    name="viewport"
-                    content="width=device-width, initial-scale=1, viewport-fit=cover"
-                />
-
-                <title>Kyle Reddit</title>
-                <meta
-                    name="description"
-                    content="It's like reddit but cooler!!! かっこいい！！"
-                />
-
-                {/* Apple Stuff */}
-                <link
-                    rel="apple-touch-icon"
-                    href="https://gystre.github.io/assets/favicon.ico"
-                />
-                <meta name="apple-mobile-web-app-capable" content="yes" />
-                <meta
-                    name="apple-mobile-web-app-status-bar-style"
-                    content="black"
-                />
-                <meta name="apple-mobile-web-app-title" content="Kyle Reddit" />
-
-                {/*  MS Tile - for Microsoft apps */}
-                <meta
-                    name="msapplication-TileImage"
-                    content="https://gystre.github.io/assets/profile.jpg"
-                />
-
-                {/*  Facebook Meta Tags */}
-                <meta property="og:type" content="website" />
-                <meta property="og:title" content="Kyle Reddit" />
-                <meta
-                    property="og:description"
-                    content="It's like reddit but cooler!!! かっこいい！！"
-                />
-                <meta property="og:url" content="https://kylegodly.com" />
-                <meta
-                    property="og:image"
-                    content="https://gystre.github.io/assets/profile.jpg"
-                />
-                <meta name="theme-color" content="#1affd1" />
-
-                {/* Twitter Meta Tags */}
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content="Kyle Reddit" />
-                <meta
-                    name="twitter:description"
-                    content="It's like reddit but cooler!!! かっこいい！！"
-                />
-                <meta
-                    name="twitter:image"
-                    content="https://gystre.github.io/assets/profile.jpg"
-                />
-
-                <link
-                    rel="icon"
-                    type="image/ico"
-                    href="https://gystre.github.io/assets/favicon.ico"
-                ></link>
-            </Helmet>
-
+            <SEO
+                url={window.location.href}
+                description="The homepage of Kyle Reddit. I mean what were u expecting bruh"
+            />
             {!data && loading ? (
                 <div>loading...</div>
             ) : (
@@ -134,11 +69,13 @@ const Index = () => {
                                             </Heading>
                                         </Link>
                                     </NextLink>
-                                    <Text>
-                                        posted by {p.creator.username} on{" "}
-                                        {convertStringToDate(p.createdAt)}
+                                    <Text color="grey">
+                                        <em>
+                                            posted by {p.creator.username} on{" "}
+                                            {convertStringToDate(p.createdAt)}
+                                        </em>
                                     </Text>
-                                    <Flex align="center">
+                                    <Flex align="center" mt="4px">
                                         {isSlateObject(p.textSnippet) ? (
                                             <RichTextViewer
                                                 textBody={JSON.parse(
