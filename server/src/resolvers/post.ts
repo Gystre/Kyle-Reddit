@@ -21,8 +21,8 @@ import { PostInput } from "./PostInput";
 import { PostResponse } from "./responses/PostResponse";
 import { validatePost } from "./validation/validatePost";
 
-const SNIPPET_LENGTH = 250;
-const SNIPPET_WITH_PICTURE_LENGTH = 100;
+// const SNIPPET_LENGTH = 250;
+// const SNIPPET_WITH_PICTURE_LENGTH = 100;
 
 @ObjectType()
 class PaginatedPosts {

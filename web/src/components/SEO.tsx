@@ -2,13 +2,13 @@ import React from "react";
 import { Helmet } from "react-helmet";
 
 interface Props {
-    url: string;
+    url?: string;
     description?: string;
     lang?: string;
     meta?: any[];
 }
 export const SEO: React.FC<Props> = ({
-    url,
+    url = "https://kylegodly.com",
     description = "",
     lang = "en",
     meta = [],

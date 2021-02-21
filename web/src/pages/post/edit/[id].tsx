@@ -82,7 +82,7 @@ export const EditPost = ({}) => {
 
     return (
         <Layout variant="small">
-            <SEO url={window.location.href} description={data.post.title} />
+            <SEO description={data.post.title} />
             <Formik
                 initialValues={{
                     title: data.post.title,

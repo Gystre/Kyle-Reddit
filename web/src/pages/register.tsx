@@ -17,10 +17,7 @@ export const Register: React.FC<Props> = () => {
     const [register] = useRegisterMutation();
     return (
         <Wrapper variant="small">
-            <SEO
-                url={window.location.href}
-                description="Make an account with KYLE REDDIT TODAYYYYYY. Join BILLIONS OF USERS AROUND THE WORLD AND ENGAGE IN SOCIAL MEDIA POSTING"
-            />
+            <SEO description="Make an account with KYLE REDDIT TODAYYYYYY. Join BILLIONS OF USERS AROUND THE WORLD AND ENGAGE IN SOCIAL MEDIA POSTING" />
             <Formik
                 initialValues={{ email: "", username: "", password: "" }}
                 onSubmit={async (values, { setErrors }) => {

@@ -1,4 +1,11 @@
-import React, { PropsWithChildren, RefObject, useEffect, useRef } from "react";
+import React, {
+    LegacyRef,
+    PropsWithChildren,
+    Ref,
+    RefObject,
+    useEffect,
+    useRef,
+} from "react";
 import { ClassNames } from "@emotion/react";
 import { Portal } from "@chakra-ui/core";
 import { Editor, Range, Text, Transforms } from "slate";
@@ -9,17 +16,10 @@ interface BaseProps {
     [key: string]: unknown;
 }
 
-type OrNull<T> = T | null;
-
 const Menu = React.forwardRef(
     (
         { className, ...props }: PropsWithChildren<BaseProps>,
-        ref:
-            | string
-            | ((instance: OrNull<HTMLDivElement>) => void)
-            | RefObject<HTMLDivElement>
-            | null
-            | undefined
+        ref: LegacyRef<HTMLDivElement>
     ) => (
         <ClassNames>
             {({ css, cx }) => (
@@ -56,12 +56,7 @@ export const ToolBarButton = React.forwardRef(
                 reversed: boolean;
             } & BaseProps
         >,
-        ref:
-            | string
-            | ((instance: OrNull<HTMLSpanElement>) => void)
-            | RefObject<HTMLSpanElement>
-            | null
-            | undefined
+        ref: LegacyRef<HTMLSpanElement>
     ) => (
         <ClassNames>
             {({ css, cx }) => (
@@ -90,12 +85,7 @@ export const ToolBarButton = React.forwardRef(
 export const Icon = React.forwardRef(
     (
         { className, ...props }: PropsWithChildren<BaseProps>,
-        ref:
-            | string
-            | RefObject<HTMLSpanElement>
-            | ((instance: OrNull<HTMLSpanElement>) => void)
-            | null
-            | undefined
+        ref: LegacyRef<HTMLSpanElement>
     ) => (
         <ClassNames>
             {({ css, cx }) => (
@@ -119,11 +109,7 @@ export const Icon = React.forwardRef(
 export const Toolbar = React.forwardRef(
     (
         { className, ...props }: PropsWithChildren<BaseProps>,
-        ref:
-            | RefObject<HTMLDivElement>
-            | ((instance: OrNull<HTMLDivElement>) => void)
-            | null
-            | undefined
+        ref: Ref<HTMLDivElement>
     ) => (
         <ClassNames>
             {({ css, cx }) => (
@@ -180,7 +166,7 @@ const isFormatActive = (editor: Editor, format: string) => {
 };
 
 export const HoveringToolbar = () => {
-    const ref = useRef<HTMLDivElement | null>();
+    const ref = useRef<HTMLDivElement>();
     const editor = useSlate();
 
     useEffect(() => {
@@ -217,7 +203,7 @@ export const HoveringToolbar = () => {
             <ClassNames>
                 {({ css }) => (
                     <Menu
-                        ref={ref}
+                        ref={ref as Ref<HTMLDivElement>}
                         className={css`
                             padding: 8px 7px 6px;
                             position: absolute;

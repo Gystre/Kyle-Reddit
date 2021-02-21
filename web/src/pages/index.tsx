@@ -41,10 +41,7 @@ const Index = () => {
 
     return (
         <Layout>
-            <SEO
-                url={window.location.href}
-                description="The homepage of Kyle Reddit. I mean what were u expecting bruh"
-            />
+            <SEO description="The homepage of Kyle Reddit. I mean what were u expecting bruh" />
             {!data && loading ? (
                 <div>loading...</div>
             ) : (

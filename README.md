@@ -20,3 +20,7 @@ This project is a way for me to learn the full stack development experience, fro
 -   need to find reliable way to upload, store, and serve images
 -   edit and delete comments
 -   paginate comments
+
+## To deploy:
+
+-   need putty to ssh into vps

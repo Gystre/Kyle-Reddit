@@ -1,3 +1,0 @@
-need to export database from prod and download onto machine -> create migration and push
-
-need to figure out how to get backup copy of database

@@ -1,0 +1,21 @@
+using filezilla...
+
+//create backup
+dokku postgres:export kyle-reddit > dump_`date +%d-%m-%Y"_"%H_%M_%S`.dump
+
+//import dump
+dokku postgres:import kyle-reddit < dump_`date +%d-%m-%Y"_"%H_%M_%S`.dump
+
+//login to psql
+docker exec -t dokku.postgres.kyle-reddit psql -U postgres
+
+//if above dumping method doesn't work, CAUTION: i haven't figured out how to run this type of database migration
+docker exec -t dokku.postgres.kyle-reddit pg_dumpall -c -U postgres > dump_`date +%d-%m-%Y"_"%H_%M_%S`.sql
+
+//tried to import via:
+docker exec -t dokku.postgres.kyle-reddit psql -d kyle_reddit -U postgres -a -q -f /root/dump_16-02-2021_01_04_34RUNTHISONE.sql
+
+//Trying to import via the psql command line doesn't let me enter any commands...
+docker exec -t dokku.postgres.kyle-reddit psql -U postgres
+
+

@@ -1,3 +1,6 @@
+ubuntu or debian vps
+install dokku on the dependencies (installation for debian https://dokku.com/docs/getting-started/install/debian/)
+
 SETUP DEPENDENCIES ON VPS 
 //create the dokku app
 dokku apps:create api
@@ -23,3 +26,34 @@ dokku redis:link kyle-reddit-redis api
 //check what containers are running
 //should be redis and postgres
 docker container list
+
+NOW TO SETUP THE CUSTOM DOMAIN
+//in the dns configuration, add an a record name to "api" and the value should be the ip of the vps (i used namecheap)
+
+//check the domains that the dokku container is using
+dokku domains:report
+
+//remove domain for app and global vhosts
+dokku domains:remove api api.li1207-188.members.linode.com
+dokku domains:remove-global li1207-188.members.linode.com
+
+//add the correct domains
+dokku domains:add-global kylegodly.com
+dokku domains:add api api.kylegodly.com
+
+//now check the proxy port (need to change this to port 80)
+dokku proxy:ports api
+
+//change the proxy port
+dokku proxy:ports-add api http:80:8080
+
+//now setup https with dokku/letsencrypt (https://github.com/dokku/dokku-letsencrypt)
+sudo dokku plugin:install https://github.com/dokku/dokku-letsencrypt.git
+
+//set the email of the dokku lets encrypt
+dokku config:set --no-restart api DOKKU_LETSENCRYPT_EMAIL=<e-mail>
+
+//run dokku let's encrypt
+dokku letsencrypt api
+
+//if you make it to this point and letsencrypt still says cannot reach, make sure ports 80 and 443 are open on the machine

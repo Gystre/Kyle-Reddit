@@ -22,10 +22,7 @@ const ChangePassword: NextPage = () => {
     const [tokenError, setTokenError] = useState("");
     return (
         <Wrapper variant="small">
-            <SEO
-                url={window.location.href}
-                description="Change ur password for KYLE REDDIT!!!!"
-            />
+            <SEO description="Change ur password for KYLE REDDIT!!!!" />
             <Formik
                 initialValues={{ newPassword: "" }}
                 onSubmit={async (values, { setErrors }) => {

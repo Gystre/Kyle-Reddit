@@ -57,7 +57,7 @@ export const Post = ({}) => {
 
     return (
         <Layout>
-            <SEO url={window.location.href} description={data.post.title} />
+            <SEO description={data.post.title} />
             {/* flex buttons to right later */}
             <EditDeletePostButtons
                 id={data.post.id}

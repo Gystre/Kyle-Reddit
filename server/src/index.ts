@@ -32,7 +32,7 @@ const main = async () => {
         entities: [User, Post, Updoot, Comment],
     });
     //run the migrations inside the migrations folder
-    // await connection.runMigrations();
+    await connection.runMigrations();
 
     //if you need to delete all the posts
     // await Comment.delete({});

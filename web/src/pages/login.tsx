@@ -18,10 +18,7 @@ export const Login: React.FC<{}> = () => {
     const [login] = useLoginMutation();
     return (
         <Wrapper variant="small">
-            <SEO
-                url={window.location.href}
-                description="Login to KYLE REDDIT LEZ GOOOOO"
-            />
+            <SEO description="Login to KYLE REDDIT LEZ GOOOOO" />
             <Formik
                 initialValues={{ usernameOrEmail: "", password: "" }}
                 onSubmit={async (values, { setErrors }) => {

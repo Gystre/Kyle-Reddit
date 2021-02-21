@@ -12,10 +12,7 @@ const ForgotPassword: React.FC<{}> = ({}) => {
     const [forgotPassword] = useForgotPasswordMutation();
     return (
         <Wrapper variant="small">
-            <SEO
-                url={window.location.href}
-                description="haha imagine losing ur password"
-            />
+            <SEO description="haha imagine losing ur password" />
             <Formik
                 initialValues={{ email: "" }}
                 onSubmit={async (values) => {

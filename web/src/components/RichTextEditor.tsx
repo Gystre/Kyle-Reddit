@@ -48,9 +48,10 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
     placeholder,
 }) => {
     const editor = useMemo(
-        () => withShortcuts(withReact(withHistory(createEditor()))),
+        () => withReact(withShortcuts(withHistory(createEditor()))),
         []
     );
+
     const renderElement = useCallback((props) => <Element {...props} />, []);
     const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
 
@@ -252,12 +253,18 @@ const isBlockActive = (editor: Editor, format: string) => {
 const toggleBlock = (editor: Editor, format: string) => {
     const isActive = isBlockActive(editor, format);
     const isList = LIST_TYPES.includes(format);
+    console.log("toggling block");
 
     Transforms.unwrapNodes(editor, {
-        match: (n) =>
-            LIST_TYPES.includes(
-                !Editor.isEditor(n) && SlateElement.isElement(n) && n.type
-            ),
+        match: (n) => {
+            //make sure that the iterated node is not the editor or a slate element
+            if (!Editor.isEditor(n) && SlateElement.isElement(n)) {
+                return LIST_TYPES.includes(n.type as string);
+            }
+
+            //if it is then just skip over it
+            return false;
+        },
         split: true,
     });
     const newProperties: Partial<SlateElement> = {

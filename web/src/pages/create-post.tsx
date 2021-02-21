@@ -27,10 +27,7 @@ const CreatePost: React.FC<{}> = () => {
 
     return (
         <Layout variant="small">
-            <SEO
-                url={window.location.href}
-                description="Create a post on KYLE REDDIT!!!!!"
-            />
+            <SEO description="Create a post on KYLE REDDIT!!!!!" />
             <Formik
                 initialValues={{ title: "", text: "", imageLink: "" }}
                 onSubmit={async (values, { setErrors }) => {
