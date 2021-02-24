@@ -15,8 +15,7 @@ Before installation you need to install: postgres and redis
 3. cd into server and run `yarn watch` and `yarn dev`
 4. cd into web and run `yarn dev`
 
-Webserver is hosted on http://localhost:3000/
-Graphql is hosted on http://localhost:4000/graphql
+Webserver is hosted on http://localhost:3000/ and graphql is hosted on http://localhost:4000/graphql
 
 Note: If you are getting wrong type error in server/index.tsx, make sure to delete the extra node_modules folder that is created inside of server/@types/connect-redis
 
