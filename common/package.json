@@ -1,0 +1,15 @@
+{
+    "name": "@kyle-reddit/common",
+    "version": "1.0.0",
+    "main": "dist/index.js",
+    "typings": "dist/index.d.ts",
+    "license": "MIT",
+    "devDependencies": {
+        "@types/node": "^14.14.31",
+        "typescript": "^4.2.2"
+    },
+    "scripts": {
+        "build": "tsc",
+        "build:watch": "tsc --watch"
+    }
+}

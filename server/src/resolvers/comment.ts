@@ -14,7 +14,7 @@ import { getConnection } from "typeorm";
 import { Comment } from "../entities/Comment";
 import { User } from "../entities/User";
 import { isAuth } from "../middleware/isAuth";
-import { slateObjectCharacterLength } from "../utils/slateObjectCharacterLength";
+import { slateObjectCharacterLength } from "@kyle-reddit/common";
 import { CommentResponse } from "./responses/CommentResponse";
 
 @Resolver(Comment)

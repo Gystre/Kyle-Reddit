@@ -18,4 +18,7 @@ docker exec -t dokku.postgres.kyle-reddit psql -d kyle_reddit -U postgres -a -q 
 //Trying to import via the psql command line doesn't let me enter any commands...
 docker exec -t dokku.postgres.kyle-reddit psql -U postgres
 
+//probably need to use pg_restore (https://www.postgresql.org/docs/9.2/app-pgrestore.html)
+docker exec -t dokku.postgres.kyle-reddit pg_restore -U postgres --data-only -d kyle-reddit < dump_16-02-2021_01_04_34.sql
 
+https://simkimsia.com/how-to-restore-database-dumps-for-postgres-in-docker-container/

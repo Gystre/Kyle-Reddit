@@ -1,10 +1,24 @@
 # Kyle-Reddit
 
-This project is a way for me to learn the full stack development experience, from server -> web -> domain registration -> vps -> deploy. Following Ben Awad's tutorial (https://www.youtube.com/watch?v=I6ypD7qv3Z8) and building off of it. Sort of a spiritual successor to Kylegram. Super cool!!!
+This project is a way for me to learn the full stack development experience, from server -> web -> domain registration -> vps -> deploy. Followed a YouTube tutorial to get the gist of things and started building off it once I wanted more features. Sort of a spiritual successor to Kylegram. Super cool!!!
 
 ## Showcase:
 
-![really cool picture of the website](https://cdn.discordapp.com/attachments/200994742782132224/794689647694708766/Kyle_Reddit_Screenshot_2021-01-01_141241.png)
+![really cool picture of the website](https://cdn.discordapp.com/attachments/200994742782132224/814019365128634389/unknown.png)
+
+## How to setup:
+
+Before installation you need to install: postgres and redis
+
+1. go into each directory (common, server, and web) and run `yarn install`
+2. cd into common and run `tsc --watch`
+3. cd into server and run `yarn watch` and `yarn dev`
+4. cd into web and run `yarn dev`
+
+Webserver is hosted on http://localhost:3000/
+Graphql is hosted on http://localhost:4000/graphql
+
+Note: If you are getting wrong type error in server/index.tsx, make sure to delete the extra node_modules folder that is created inside of server/@types/connect-redis
 
 ## Todo
 
@@ -23,4 +37,4 @@ This project is a way for me to learn the full stack development experience, fro
 
 ## To deploy:
 
--   need putty to ssh into vps
+-   need putty to ssh into vps when using deploy.sh
