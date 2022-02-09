@@ -14,9 +14,9 @@ Before installation you need to install: postgres and redis
 2. cd into common and run `tsc --watch`
 3. cd into server and run `yarn watch` and `yarn dev`
 4. cd into web and run `yarn dev`
+5. to initialize the database, point ORM to an empty postgres database (change DATABASE_URL in .env), and run `npx typeorm migration:generate -n Initial`, then go to server/index.tsx and run migrations
 
-Webserver is hosted on http://localhost:3000/
-Graphql is hosted on http://localhost:4000/graphql
+Webserver is hosted on http://localhost:3000/ and graphql is hosted on http://localhost:4000/graphql
 
 Note: If you are getting wrong type error in server/index.tsx, make sure to delete the extra node_modules folder that is created inside of server/@types/connect-redis
 
