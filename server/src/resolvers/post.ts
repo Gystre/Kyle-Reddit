@@ -208,7 +208,6 @@ export class PostResolver {
         @Arg("input") input: PostInput,
         @Ctx() { req }: MyContext
     ): Promise<PostResponse | null> {
-        console.log(input);
         const errors = validatePost(input);
 
         if (errors) {
